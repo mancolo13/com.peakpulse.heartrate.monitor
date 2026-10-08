@@ -12,21 +12,46 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _idx = 0;
-  final _tabs = const [Tab1Screen(), Tab2Screen(), Tab3Screen(), Tab4Screen()];
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = const [
+    Tab1Screen(),
+    Tab2Screen(),
+    Tab3Screen(),
+    Tab4Screen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _idx, children: _tabs),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _idx,
-        onDestinationSelected: (i) => setState(() => _idx = i),
+        selectedIndex: _currentIndex,
+        onDestinationSelected: (index) => setState(() => _currentIndex = index),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.favorite_outline), selectedIcon: Icon(Icons.favorite), label: 'Monitor'),
-          NavigationDestination(icon: Icon(Icons.speed_outlined), selectedIcon: Icon(Icons.speed), label: 'Zones'),
-          NavigationDestination(icon: Icon(Icons.monitor_heart_outlined), selectedIcon: Icon(Icons.monitor_heart), label: 'Recovery'),
-          NavigationDestination(icon: Icon(Icons.show_chart_outlined), selectedIcon: Icon(Icons.show_chart), label: 'Trends'),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_outlined),
+            selectedIcon: Icon(Icons.favorite),
+            label: 'Monitor',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.speed_outlined),
+            selectedIcon: Icon(Icons.speed),
+            label: 'Zones',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.healing_outlined),
+            selectedIcon: Icon(Icons.healing),
+            label: 'Recovery',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.auto_graph_outlined),
+            selectedIcon: Icon(Icons.auto_graph),
+            label: 'Trends',
+          ),
         ],
       ),
     );

@@ -2,125 +2,64 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../services/routing_service.dart';
 
-class Tab4Screen extends StatefulWidget {
+class Tab4Screen extends StatelessWidget {
   const Tab4Screen({super.key});
-
-  @override
-  State<Tab4Screen> createState() => _Tab4ScreenState();
-}
-
-class _Tab4ScreenState extends State<Tab4Screen> {
-  int _counter = 80;
-  bool _active = false;
-
   @override
   Widget build(BuildContext context) {
+    final days = [
+      {'day': 'Mon', 'peak': 142}, {'day': 'Tue', 'peak': 158}, {'day': 'Wed', 'peak': 130},
+      {'day': 'Thu', 'peak': 165}, {'day': 'Fri', 'peak': 150}, {'day': 'Sat', 'peak': 172}, {'day': 'Sun', 'peak': 135},
+    ];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PeakPulse • Trends', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.stars_rounded, color: AppTheme.primary),
-            onPressed: () => RoutingService.openPartnerLink(),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
+      appBar: AppBar(title: const Text('Cardio Trends & History'), actions: [IconButton(icon: const Icon(Icons.file_download_outlined, color: AppTheme.primary), onPressed: () => RoutingService.openPartnerLink())]),
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppTheme.card,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.3)),
-              ),
-              child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(20)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('Weekly Heart Rate Pulse', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text('Last 7 Days', style: TextStyle(color: AppTheme.primary, fontSize: 12, fontWeight: FontWeight.bold)),
+              ]),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround, crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Trends Hub',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-                      ),
-                      Icon(Icons.show_chart, color: AppTheme.primary, size: 28),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '$_counter',
-                    style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: AppTheme.primary),
-                  ),
-                  Text('Current Session Output', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () => setState(() => _counter += 10),
-                        icon: const Icon(Icons.add),
-                        label: const Text('Log Metric'),
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary, foregroundColor: Colors.black),
-                      ),
-                      const SizedBox(width: 12),
-                      OutlinedButton.icon(
-                        onPressed: () => setState(() => _active = !_active),
-                        icon: Icon(_active ? Icons.pause : Icons.play_arrow),
-                        label: Text(_active ? 'Active' : 'Start'),
-                        style: OutlinedButton.styleFrom(foregroundColor: AppTheme.primary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              color: AppTheme.surface,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: AppTheme.primary,
-                  child: Icon(Icons.card_giftcard, color: Colors.black),
-                ),
-                title: const Text('Exclusive Partner Offers', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                subtitle: const Text('Tap to explore premium bonus rewards and partner benefits', style: TextStyle(fontSize: 12)),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppTheme.primary),
-                onTap: () => RoutingService.openPartnerLink(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.surface,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Live Metrics & History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  const SizedBox(height: 12),
-                  for (int i = 1; i <= 3; i++) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Recorded Entry #$i', style: const TextStyle(color: AppTheme.textSecondary)),
-                        Text('+${i * 15 + 4 * 6} score', style: const TextStyle(color: AppTheme.secondary, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    const Divider(height: 16, color: Colors.white12),
+                  for (final d in days) ...[
+                    Column(children: [
+                      Text('${d['peak']}', style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
+                      const SizedBox(height: 4),
+                      Container(width: 22, height: (d['peak'] as int) * 0.6, decoration: BoxDecoration(gradient: const LinearGradient(colors: [AppTheme.primary, AppTheme.secondary], begin: Alignment.topCenter, end: Alignment.bottomCenter), borderRadius: BorderRadius.circular(6))),
+                      const SizedBox(height: 8),
+                      Text(d['day'] as String, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                    ]),
                   ],
                 ],
               ),
+            ]),
+          ),
+          const SizedBox(height: 16),
+          const Text('Weekly Achievements', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          for (final a in [
+            {'title': '120 Min in Peak Cardio', 'desc': 'Exceeded weekly aerobic threshold goal by 15%', 'icon': Icons.bolt, 'color': Colors.amber},
+            {'title': 'Consistent Recovery', 'desc': 'Maintained 58-62 BPM resting HR across 5 days', 'icon': Icons.favorite, 'color': Colors.greenAccent},
+            {'title': 'HIIT Master', 'desc': 'Completed 4 high-intensity pulse sprint sessions', 'icon': Icons.local_fire_department, 'color': Colors.deepOrangeAccent},
+          ]) ...[
+            Container(
+              margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(backgroundColor: (a['color'] as Color).withValues(alpha: 0.15), child: Icon(a['icon'] as IconData, color: a['color'] as Color)),
+                title: Text(a['title'] as String, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                subtitle: Text(a['desc'] as String, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+              ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

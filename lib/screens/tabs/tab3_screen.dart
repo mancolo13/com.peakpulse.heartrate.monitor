@@ -2,126 +2,57 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../services/routing_service.dart';
 
-class Tab3Screen extends StatefulWidget {
+class Tab3Screen extends StatelessWidget {
   const Tab3Screen({super.key});
-
-  @override
-  State<Tab3Screen> createState() => _Tab3ScreenState();
-}
-
-class _Tab3ScreenState extends State<Tab3Screen> {
-  int _counter = 60;
-  bool _active = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PeakPulse • Recovery', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.stars_rounded, color: AppTheme.primary),
-            onPressed: () => RoutingService.openPartnerLink(),
+      appBar: AppBar(title: const Text('Recovery & Health'), actions: [IconButton(icon: const Icon(Icons.share, color: AppTheme.primary), onPressed: () => RoutingService.openPartnerLink())]),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.3))),
+            child: Row(children: [
+              Stack(alignment: Alignment.center, children: const [
+                SizedBox(width: 80, height: 80, child: CircularProgressIndicator(value: 0.88, strokeWidth: 8, backgroundColor: Colors.white10, color: Colors.greenAccent)),
+                Text('88%', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ]),
+              const SizedBox(width: 20),
+              const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Readiness: High', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
+                SizedBox(height: 4),
+                Text('Cardiovascular system is fully restored and primed for training.', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+              ])),
+            ]),
+          ),
+          const SizedBox(height: 16),
+          const Text('Vital Metrics', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          GridView.count(
+            crossAxisCount: 2, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: 1.3,
+            children: [
+              _metricTile('Sleep Resting HR', '58 BPM', Icons.nightlight_round, Colors.indigoAccent),
+              _metricTile('Cardio Stress', 'Low (14%)', Icons.bolt, Colors.amberAccent),
+              _metricTile('Respiratory Rate', '14.2 rpm', Icons.air, Colors.cyanAccent),
+              _metricTile('VO2 Max Estimate', '48.5 ml/kg', Icons.speed, AppTheme.primary),
+            ],
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppTheme.card,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.3)),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Recovery Hub',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-                      ),
-                      Icon(Icons.monitor_heart, color: AppTheme.primary, size: 28),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '$_counter',
-                    style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: AppTheme.primary),
-                  ),
-                  Text('Current Session Output', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () => setState(() => _counter += 10),
-                        icon: const Icon(Icons.add),
-                        label: const Text('Log Metric'),
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary, foregroundColor: Colors.black),
-                      ),
-                      const SizedBox(width: 12),
-                      OutlinedButton.icon(
-                        onPressed: () => setState(() => _active = !_active),
-                        icon: Icon(_active ? Icons.pause : Icons.play_arrow),
-                        label: Text(_active ? 'Active' : 'Start'),
-                        style: OutlinedButton.styleFrom(foregroundColor: AppTheme.primary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              color: AppTheme.surface,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: AppTheme.primary,
-                  child: Icon(Icons.card_giftcard, color: Colors.black),
-                ),
-                title: const Text('Exclusive Partner Offers', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                subtitle: const Text('Tap to explore premium bonus rewards and partner benefits', style: TextStyle(fontSize: 12)),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppTheme.primary),
-                onTap: () => RoutingService.openPartnerLink(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.surface,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Live Metrics & History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  const SizedBox(height: 12),
-                  for (int i = 1; i <= 3; i++) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Recorded Entry #$i', style: const TextStyle(color: AppTheme.textSecondary)),
-                        Text('+${i * 15 + 3 * 6} score', style: const TextStyle(color: AppTheme.secondary, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    const Divider(height: 16, color: Colors.white12),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+    );
+  }
+  Widget _metricTile(String title, String val, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(16)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(icon, color: color, size: 24),
+        const SizedBox(height: 6),
+        Text(val, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+        Text(title, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+      ]),
     );
   }
 }
