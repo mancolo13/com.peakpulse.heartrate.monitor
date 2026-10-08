@@ -1,4 +1,4 @@
-package com.pulsefit.workout.hiit
+package com.peakpulse.heartrate.monitor
 
 import io.flutter.embedding.android.FlutterActivity
 
